@@ -10,11 +10,16 @@ class GamesController < ApplicationController
     @word = params[:word]
     @letters = params[:letters]
     if !valid_attempt?(@word, @letters.split(' '))
-      @score = 1
+      @result = 1
     elsif !attempt_exists?(@word)
-      @score = 2
+      @result = 2
     else
-      @score = 3
+      if session[:score].nil?
+        session[:score] = @word.length
+      end
+      session[:score] += @word.length
+      @score = session[:score]
+      @result = 3
     end
   end
 
